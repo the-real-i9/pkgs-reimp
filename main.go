@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	before, after, found := i9strings.Cut("TOKEN=adkajhfjh32rkh", "=")
-	fmt.Println(before, after, found)
+	before, found := i9strings.CutSuffix("TOKEN=adkajhfjh32rkh", "adkajhfjh32rkh")
+	fmt.Println(before, found)
 }

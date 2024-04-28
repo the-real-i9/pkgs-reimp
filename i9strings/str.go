@@ -120,3 +120,31 @@ func Cut(s, sep string) (before, after string, found bool) {
 
 	return s, "", false
 }
+
+func CutPrefix(s, prefix string) (after string, found bool) {
+	if prefix == "" {
+		return s, true
+	}
+
+	prefixLen := len(prefix)
+
+	if s[0:prefixLen] == prefix {
+		return s[prefixLen:], true
+	}
+
+	return s, false
+}
+
+func CutSuffix(s, suffix string) (before string, found bool) {
+	if suffix == "" {
+		return s, true
+	}
+
+	fromTo := len(s) - len(suffix)
+
+	if s[fromTo:] == suffix {
+		return s[0:fromTo], true
+	}
+
+	return s, false
+}
