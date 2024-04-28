@@ -148,3 +148,25 @@ func CutSuffix(s, suffix string) (before string, found bool) {
 
 	return s, false
 }
+
+// If both strings have equal length, if s and t characters at same position are equal, as defined by the equality test according to the codepoint difference s - character and t - charcter
+//
+// If codepoint difference is zero (same case), 32 (lowercase - uppercase), or -32 (uppercase - lowercase) then the two characters are equal.
+//
+// If unequlity is detected, we return false.
+func EqualFold(s, t string) bool {
+	sLen := len(s)
+	if sLen != len(t) {
+		return false
+	}
+
+	for i := 0; i < sLen; i++ {
+		codeDiff := int(s[i]) - int(t[i])
+		if codeDiff == 0 || codeDiff == 32 || codeDiff == -32 {
+			continue
+		}
+		return false
+	}
+
+	return true
+}

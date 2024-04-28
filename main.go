@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
-	before, found := i9strings.CutSuffix("TOKEN=adkajhfjh32rkh", "adkajhfjh32rkh")
-	fmt.Println(before, found)
+	eq := i9strings.EqualFold("aBcDe", "AbCdE")
+
+	fmt.Println(eq)
 }
