@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	res := i9strings.Contains("seafood", "fod")
+	res := i9strings.Count("adelaide", "de")
 	fmt.Println(res)
 }
