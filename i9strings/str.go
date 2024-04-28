@@ -12,14 +12,14 @@ func Compare(a, b string) int {
 	return cmp.Compare(a, b)
 }
 
-func Contains(s, substr string) bool {
+func Contains(s, sep string) bool {
 	sLen := len(s)
-	substrLen := len(substr)
+	sepLen := len(sep)
 
-	lim := sLen - (substrLen - 1)
+	lim := sLen - (sepLen - 1)
 
 	for i := 0; i < lim; i++ {
-		if s[i:i+substrLen] == substr {
+		if s[i:i+sepLen] == sep {
 			return true
 		}
 	}
@@ -81,23 +81,42 @@ func ConstainsRune(s string, r rune) bool {
 	return false
 }
 
-func Count(s, substr string) int {
-	if substr == "" {
+func Count(s, sep string) int {
+	if sep == "" {
 		return len(s) + 1
 	}
 
 	sLen := len(s)
-	substrLen := len(substr)
+	sepLen := len(sep)
 
-	lim := sLen - (substrLen - 1)
+	lim := sLen - (sepLen - 1)
 
 	cnt := 0
 
 	for i := 0; i < lim; i++ {
-		if s[i:i+substrLen] == substr {
+		if s[i:i+sepLen] == sep {
 			cnt++
 		}
 	}
 
 	return cnt
+}
+
+func Cut(s, sep string) (before, after string, found bool) {
+	if sep == "" {
+		return "", s, true
+	}
+
+	sLen := len(s)
+	sepLen := len(sep)
+
+	lim := sLen - (sepLen - 1)
+
+	for i := 0; i < lim; i++ {
+		if s[i:i+sepLen] == sep {
+			return s[0:i], s[i+sepLen:], true
+		}
+	}
+
+	return s, "", false
 }

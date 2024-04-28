@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	res := i9strings.Count("adelaide", "de")
-	fmt.Println(res)
+	before, after, found := i9strings.Cut("TOKEN=adkajhfjh32rkh", "=")
+	fmt.Println(before, after, found)
 }
