@@ -341,3 +341,35 @@ func Join(elems []string, sep string) string {
 
 	return res
 }
+
+func LastIndex(s, substr string) int {
+	sLen := len(s)
+	substrLen := len(substr)
+
+	lim := sLen - substrLen
+
+	for i := lim; i > -1; i-- {
+		nextLastSubstrLenChars := s[i : i+substrLen] // e.g. nextLast2Chars, provided substrLen == 2
+
+		if nextLastSubstrLenChars == substr {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func LastIndexAny(s, chars string) int {
+
+	return -1
+}
+
+func LastIndexByte(s string, c byte) int {
+
+	return -1
+}
+
+func LastIndexFunc(s string, f func(rune) bool) int {
+
+	return -1
+}

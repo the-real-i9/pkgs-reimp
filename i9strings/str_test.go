@@ -8,7 +8,8 @@ import (
 
 func TestCompare(t *testing.T) {
 	// str1, str2, exp := "axc", "abz", 1 // in alphabhet listing, we expect to encounter "abz" before "axc"
-	str1, str2, exp := "a", "aa", -1 // in alphabhet listing, we expect to encounter "a" before "aa"
+	// str1, str2, exp := "a", "aa", -1 // in alphabhet listing, we expect to encounter "a" before "aa"
+	str1, str2, exp := "x", "aabc", 1 // in alphabhet listing, we expect to encounter "a" before "aa"
 
 	res := Compare(str1, str2)
 
@@ -139,5 +140,17 @@ func TestJoin(t *testing.T) {
 
 	if res != exp {
 		t.Errorf("Expected %s for Index(%q, %s). Instead got %s", exp, elems, sep, res)
+	}
+}
+
+func TestLastIndex(t *testing.T) {
+	// str, substr, exp := "marmalade", "ma", 3
+	str, substr, exp := "marmalade", "a", 6
+	// str, substr, exp := "marmalade", "e", 8
+
+	res := LastIndex(str, substr)
+
+	if res != exp {
+		t.Errorf("Expected %d for Index(%s, %s). Instead got %d", exp, str, substr, res)
 	}
 }
