@@ -1,7 +1,6 @@
 package i9strings
 
 import (
-	"cmp"
 	"unicode"
 )
 
@@ -9,18 +8,35 @@ func Clone(s string) string {
 	return s[:]
 }
 
+/*
+The rule of string comparison is that, when comparing two characters at equal positions, the first comparison to be either 1 or -1 becomes the result of the whole comparison.
+
+Think of a character string as having "place values" like the mathematical number string; 1 comes before 12, just as "a" comes before "ab". We can say that "aa" is the next alphabet after "z", just as 11 is the next number after 10.
+
+That said, I choose to stick with language constructs.
+*/
 func Compare(a, b string) int {
-	return cmp.Compare(a, b)
+	if a < b {
+		return -1
+	}
+
+	if a > b {
+		return 1
+	}
+
+	return 0
 }
 
-func Contains(s, sep string) bool {
+func Contains(s, substr string) bool {
 	sLen := len(s)
-	sepLen := len(sep)
+	substrLen := len(substr)
 
-	lim := sLen - (sepLen - 1)
+	lim := sLen - (substrLen - 1)
 
 	for i := 0; i < lim; i++ {
-		if s[i:i+sepLen] == sep {
+		nextSubstrLenChars := s[i : i+substrLen] // for instance: next2Chars, provided substrLen == 2
+
+		if nextSubstrLenChars == substr {
 			return true
 		}
 	}
@@ -62,7 +78,7 @@ func ContainsAny(s, chars string) bool {
 	return false
 }
 
-func ConstainsFunc(s string, f func(rune) bool) bool {
+func ContainsFunc(s string, f func(rune) bool) bool {
 	for _, r := range s {
 		if f(r) {
 			return true
@@ -204,4 +220,58 @@ func Fields(s string) []string {
 	}
 
 	return strSlice
+}
+
+func FieldsFunc(s string, f func(rune) bool) []string {
+
+	strSlice := []string{}
+
+	currStr := ""
+
+	for i, char := range s {
+		funcSat := f(char)
+		isLastChar := i == len(s)-1
+
+		if !funcSat {
+			currStr += string(char)
+		}
+
+		if funcSat || isLastChar {
+			if len(currStr) > 0 {
+				strSlice = append(strSlice, currStr)
+				currStr = ""
+			}
+		}
+	}
+
+	return strSlice
+}
+
+func HasPrefix(s, prefix string) bool {
+	prefixEnd := len(prefix)
+
+	return s[0:prefixEnd] == prefix
+}
+
+func HasSuffix(s, suffix string) bool {
+	suffixStart := len(s) - len(suffix)
+
+	return s[suffixStart:] == suffix
+}
+
+func Index(s, substr string) int {
+	sLen := len(s)
+	substrLen := len(substr)
+
+	lim := sLen - (substrLen - 1)
+
+	for i := 0; i < lim; i++ {
+		nextSubstrLenChars := s[i : i+substrLen] // e.g. next2Chars, provided substrLen == 2
+
+		if nextSubstrLenChars == substr {
+			return i
+		}
+	}
+
+	return -1
 }
