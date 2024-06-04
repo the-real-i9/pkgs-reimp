@@ -2,6 +2,7 @@ package i9strings
 
 import (
 	"cmp"
+	"unicode"
 )
 
 func Clone(s string) string {
@@ -126,10 +127,10 @@ func CutPrefix(s, prefix string) (after string, found bool) {
 		return s, true
 	}
 
-	prefixLen := len(prefix)
+	prefixEnd := len(prefix)
 
-	if s[0:prefixLen] == prefix {
-		return s[prefixLen:], true
+	if s[0:prefixEnd] == prefix {
+		return s[prefixEnd:], true
 	}
 
 	return s, false
@@ -140,33 +141,67 @@ func CutSuffix(s, suffix string) (before string, found bool) {
 		return s, true
 	}
 
-	fromTo := len(s) - len(suffix)
+	suffixStart := len(s) - len(suffix)
 
-	if s[fromTo:] == suffix {
-		return s[0:fromTo], true
+	if s[suffixStart:] == suffix {
+		return s[0:suffixStart], true
 	}
 
 	return s, false
 }
 
-// If both strings have equal length, if s and t characters at same position are equal, as defined by the equality test according to the codepoint difference s - character and t - charcter
-//
-// If codepoint difference is zero (same case), 32 (lowercase - uppercase), or -32 (uppercase - lowercase) then the two characters are equal.
-//
-// If unequlity is detected, we return false.
+/*
+Both strings must be of equal length, if not, we immediately return false.
+
+The code point difference between same characters of opposite cases is exactly 32.
+
+Since EqualFold tests for same characters case-insensitively, if codepoint difference of two characters is zero (same case), 32 (lowercase - uppercase), or -32 (uppercase - lowercase), the two characters are the same case-insensitively, otherwise they're not same.
+
+If unequality is detected, we return false.
+*/
 func EqualFold(s, t string) bool {
 	sLen := len(s)
 	if sLen != len(t) {
 		return false
 	}
 
+	isSameChar := func(sChar byte, tChar byte) bool {
+		codePointDiff := int(sChar) - int(tChar)
+
+		return codePointDiff == 0 || codePointDiff == 32 || codePointDiff == -32
+	}
+
 	for i := 0; i < sLen; i++ {
-		codeDiff := int(s[i]) - int(t[i])
-		if codeDiff == 0 || codeDiff == 32 || codeDiff == -32 {
+		if isSameChar(s[i], t[i]) {
 			continue
 		}
 		return false
 	}
 
 	return true
+}
+
+func Fields(s string) []string {
+
+	strSlice := []string{}
+
+	currStr := ""
+
+	for i, char := range s {
+		isSpace := unicode.IsSpace(char)
+		isLastChar := i == len(s)-1
+
+		if !isSpace {
+			currStr += string(char)
+		}
+
+		if isSpace || isLastChar {
+			if len(currStr) > 0 {
+				strSlice = append(strSlice, currStr)
+				currStr = ""
+			}
+		}
+	}
+
+	return strSlice
 }
