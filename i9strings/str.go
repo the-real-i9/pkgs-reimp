@@ -44,18 +44,18 @@ func Contains(s, substr string) bool {
 	return false
 }
 
-// tr - "tracker map", lcs - "less characters string", mcs = "more characters string"
+// lcs - "less characters string", mcs = "more characters string"
 //
 // Find the string with less characters (lcs) and more charaters (mcs) between s and chars.
 //
-// Loop through the string with less characters and key each rune in the tracker map.
+// Loop through the lcs and key each character in the contains map.
 //
-// Loop through the other string and check if the rune exists within the tracker map. If true, return true. Else, the loop runs to completion, in which case it returns false.
+// Loop through the mcs and check if the character exists in the contains map. If true, return true. Else, the loop runs to completion, in which case it returns false.
 //
 // Time Complexity - O(n)
 func ContainsAny(s, chars string) bool {
 	var (
-		tr       = make(map[rune]bool)
+		contains = make(map[rune]bool)
 		lcs, mcs string
 	)
 
@@ -65,12 +65,12 @@ func ContainsAny(s, chars string) bool {
 		lcs, mcs = chars, s
 	}
 
-	for _, r := range lcs {
-		tr[r] = true
+	for _, c := range lcs {
+		contains[c] = true
 	}
 
-	for _, r := range mcs {
-		if tr[r] {
+	for _, c := range mcs {
+		if contains[c] {
 			return true
 		}
 	}
@@ -269,6 +269,54 @@ func Index(s, substr string) int {
 		nextSubstrLenChars := s[i : i+substrLen] // e.g. next2Chars, provided substrLen == 2
 
 		if nextSubstrLenChars == substr {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func IndexAny(s, chars string) int {
+	var (
+		exists = make(map[rune]bool)
+	)
+
+	for _, c := range chars {
+		exists[c] = true
+	}
+
+	for i, c := range s {
+		if exists[c] {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func IndexByte(s string, c byte) int {
+	for i, ch := range s {
+		if c == byte(ch) {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func IndexFunc(s string, f func(rune) bool) int {
+	for i, c := range s {
+		if f(c) {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func IndexRune(s string, r rune) int {
+	for i, c := range s {
+		if c == r {
 			return i
 		}
 	}

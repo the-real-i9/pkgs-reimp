@@ -3,6 +3,7 @@ package i9strings
 import (
 	"slices"
 	"testing"
+	"unicode"
 )
 
 func TestCompare(t *testing.T) {
@@ -85,5 +86,48 @@ func TestIndex(t *testing.T) {
 
 	if res != exp {
 		t.Errorf("Expected %d for Index(%s, %s). Instead got %d.", exp, str, substr, res)
+	}
+}
+
+func TestIndexAny(t *testing.T) {
+	// str, chars, exp := "biscuit", "kit", 1
+	str, chars, exp := "biscuit", "dot", 6
+
+	res := IndexAny(str, chars)
+
+	if res != exp {
+		t.Errorf("Expected %d for Index(%s, %s). Instead got %d.", exp, str, chars, res)
+	}
+}
+
+func TestIndexByte(t *testing.T) {
+	str, c, exp := "spaghetti", byte('s'), 0
+
+	res := IndexByte(str, c)
+
+	if res != exp {
+		t.Errorf("Expected %d for Index(%s, %b). Instead got %d.", exp, str, c, res)
+	}
+}
+
+func TestIndexFunc(t *testing.T) {
+	str, exp := "spa5ghetti", 3
+
+	res := IndexFunc(str, func(r rune) bool {
+		return unicode.IsNumber(r)
+	})
+
+	if res != exp {
+		t.Errorf("Expected %d for Index(%s, f). Instead got %d.", exp, str, res)
+	}
+}
+
+func TestIndexRune(t *testing.T) {
+	str, r, exp := "spa😂ghetti", '😂', 3
+
+	res := IndexRune(str, r)
+
+	if res != exp {
+		t.Errorf("Expected %d for Index(%s, %b). Instead got %d.", exp, str, r, res)
 	}
 }
