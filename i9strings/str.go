@@ -88,7 +88,7 @@ func ContainsFunc(s string, f func(rune) bool) bool {
 	return false
 }
 
-func ConstainsRune(s string, r rune) bool {
+func ContainsRune(s string, r rune) bool {
 	for _, tr := range s {
 		if r == tr {
 			return true
@@ -98,20 +98,22 @@ func ConstainsRune(s string, r rune) bool {
 	return false
 }
 
-func Count(s, sep string) int {
-	if sep == "" {
+func Count(s, substr string) int {
+	if substr == "" {
 		return len(s) + 1
 	}
 
 	sLen := len(s)
-	sepLen := len(sep)
+	substrLen := len(substr)
 
-	lim := sLen - (sepLen - 1)
+	lim := sLen - (substrLen - 1)
 
 	cnt := 0
 
 	for i := 0; i < lim; i++ {
-		if s[i:i+sepLen] == sep {
+		nextSubstrLenChars := s[i : i+substrLen] // for instance: next2Chars, provided substrLen == 2
+
+		if nextSubstrLenChars == substr {
 			cnt++
 		}
 	}
