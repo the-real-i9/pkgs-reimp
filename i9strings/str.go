@@ -323,3 +323,19 @@ func IndexRune(s string, r rune) int {
 
 	return -1
 }
+
+func Join(elems []string, sep string) string {
+	res := ""
+
+	for i, str := range elems {
+		res += str
+
+		isLastStr := i == len(elems)-1
+
+		if !isLastStr {
+			res += sep
+		}
+	}
+
+	return res
+}
